@@ -1,2 +1,6 @@
 # nodejs-blog
 基于nodeJS《简易个人博客》
+# 启动项目
+```js
+  node app
+```
