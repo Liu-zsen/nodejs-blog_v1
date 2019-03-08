@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-blog",
+  "version": "1.0.0",
+  "description": "基于nodeJS《简易个人博客》\r # 启动项目\r ```js\r   node app\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Liu-zsen/nodejs-blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Liu-zsen/nodejs-blog/issues"
+  },
+  "homepage": "https://github.com/Liu-zsen/nodejs-blog#readme"
+}
