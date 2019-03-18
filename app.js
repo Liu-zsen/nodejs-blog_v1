@@ -2,14 +2,17 @@ const Koa = require('koa');
 const static = require('koa-static');
 const views = require('koa-views');
 const logger = require('koa-logger');
-const { join } = require('path');
 const router = require('./routers/router');
-
+const body = require('koa-body');
+const { join } = require('path');
 //生成koa实例
 const app = new Koa();
 
 //用logger模块监听 请求的信息  ，所以是第一个注册的中间件
 app.use(logger());
+
+//配置koabody处理 post 请求数据
+app.use(body());
 
 //将静态文件目录设置为：项目根目录+/public
 app.use(static(join(__dirname, "public")));
