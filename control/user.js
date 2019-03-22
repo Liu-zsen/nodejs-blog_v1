@@ -1,6 +1,6 @@
 const { db } = require('../Schema/config');
 const UserSchema = require('../Schema/user');
-const encrypt =require('../util/encrypt')
+const encrypt =require('../util/encrypt');
 
 // 通过db对象创建操作user数据库的模型对象
 const User = db.model('users',UserSchema);
@@ -57,8 +57,9 @@ exports.reg = async ctx=>{
 
 
 
-}
+};
 
+//用户登录
 exports.login = async ctx=>{
     const user = ctx.request.body ;
     const username = user.username;
@@ -87,6 +88,25 @@ exports.login = async ctx=>{
                 })
             }
 
+            //登陆成功前,让用户在他的cookie 里设置username password 加密后的密码 权限
+            ctx.cookies.set('username',username, {
+                domain: "localhost",        //挂载的主机名，
+                path:'/',           //
+                maxAge: 36e5,
+                httpOnly:false,  //true 不让客户端访问这个cookie
+                overwrite:false,
+            });
+
+            //用户数据库 _id 值
+            ctx.cookies.set('uid', data[0]._id,{
+                domain:'localhost',
+                path:'/',
+                maxAge: 36e5,
+                httpOnly:false,
+                overwrite:false,
+            });
+
+
             //登录成功
             await ctx.render('isOk',{
                 status:'用户登录成功'
@@ -97,5 +117,36 @@ exports.login = async ctx=>{
                 status : '登录失败'
             })
         })
+
+};
+
+//保存状态
+exports.keepLog = async (ctx,next)=>{   //
+    if(ctx.session.isNew){  //如果为true 表示session 没有
+        if(ctx.cookies.get('uid')){
+            ctx.session = {
+                username : ctx.cookies.get('username'),
+                uid : ctx.cookies.get('uid')
+            }
+        }
+    }
+
+    await next()
+};
+
+//用户退出中间件
+exports.logout = async ctx=>{
+    //当用户退出时。清空 cookie，session
+    ctx.session = null;
+    //cookie 只有set和get方法
+    ctx.cookies.set('username',null ,{
+        maxAge : 0
+    });
+    ctx.cookies.set('uid',null ,{
+        maxAge : 0
+    })
+
+    //重定向到首页
+    ctx.redirect("/")
 
 }

@@ -92,7 +92,7 @@ block scripts
       }); //建立编辑器
 
       form.on("submit(send)", (res) => {
-        const { tips, title } = res.field
+        const { tips, title } = res.field;
 
         if(layedit.getText(index).trim().length === 0)return layer.alert("请输入内容")
         
@@ -105,7 +105,7 @@ block scripts
         $.post("/article", data, (msg) => {
           if(msg.status){
             layer.alert('发表成功', (res) => {
-              location.href = "/"
+              location.href = "/";
             })
           }else{
             layer.alert(`发表失败，失败信息：${msg.msg}`)
