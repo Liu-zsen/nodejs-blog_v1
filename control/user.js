@@ -106,6 +106,11 @@ exports.login = async ctx=>{
                 overwrite:false,
             });
 
+            ctx.session = {
+                username : username ,
+                uid : data[0]._id,
+                avatar : data[0].avatar,
+            }
 
             //登录成功
             await ctx.render('isOk',{
@@ -126,7 +131,7 @@ exports.keepLog = async (ctx,next)=>{   //
         if(ctx.cookies.get('uid')){
             ctx.session = {
                 username : ctx.cookies.get('username'),
-                uid : ctx.cookies.get('uid')
+                uid : ctx.cookies.get('uid'),
             }
         }
     }

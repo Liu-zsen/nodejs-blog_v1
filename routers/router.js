@@ -6,12 +6,7 @@ const article = require('../control/article');
 const router = new Router;
 
 //设计主页 /
-router.get('/', user.keepLog , async (ctx)=>{
-  await  ctx.render("index",{
-    title : 'node案例',
-    session : ctx.session
-  });
-});
+router.get('/', user.keepLog , article.getList);
 
 //处理用户登录注册
 router.get(/^\/user\/(?=reg|login)/,async (ctx)=>{
@@ -34,5 +29,7 @@ router.get('/article' ,user.keepLog , article.addPage);
 //文章添加
 router.post('/article',user.keepLog, article.add);
 
+//分页设置
+router.get('/page/:id',article.getList);
 
 module.exports = router;

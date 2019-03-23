@@ -2,7 +2,7 @@ extends ./layout/layout
 
 block css
   link(rel="stylesheet", href="/css/index.css")
-//- 
+//-
   artList
     头像
     tips
@@ -13,7 +13,7 @@ block css
 
 block contents
   include ./layout/tag
-  
+
   .layui-container
     .layui-row.layui-col-space15
       //- 文章列表
@@ -35,16 +35,16 @@ block contents
                   i(title="评论").layui-icon.layui-icon-file-b
                   = info.commentNum
         include ./layout/laypage.pug
-        
+
       //- 右侧公告
       include ./layout/right_tag
 
 block scripts
   script(src="/js/index.js")
-  
-    
-    
-    
-    
+
+
+
+
+
 
 
