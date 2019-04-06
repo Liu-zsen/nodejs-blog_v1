@@ -20,7 +20,7 @@ block css
 
 block contents
   include ./layout/tag
-  
+
   .layui-container
     .layui-row.layui-col-space15
       //- 文章列表
@@ -37,13 +37,13 @@ block contents
             span= article.tips
           //- 文章内容
           div(style="padding:10px;").article-detail!= article.content
-            
+
 
 
         //- 评论
         .comment.default-box
           fieldset.text-center
-              legend 评论
+            legend 评论
           div.txt
             <textarea id="comment-txt"></textarea>
             button.layui-btn 回复

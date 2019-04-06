@@ -24,7 +24,9 @@ exports.reg = async ctx=>{
             //用户名不存在，需要存到数据库(存到数据库之前要先加密)
             const _user = new User({
                 username,
-                password: encrypt(password)
+                password: encrypt(password),
+                commentNum : 0,
+                articleNum : 0
             })
 
 
@@ -110,6 +112,7 @@ exports.login = async ctx=>{
                 username : username ,
                 uid : data[0]._id,
                 avatar : data[0].avatar,
+                role : data[0].role
             }
 
             //登录成功
@@ -125,13 +128,20 @@ exports.login = async ctx=>{
 
 };
 
-//保存状态
+//保持用户状态
 exports.keepLog = async (ctx,next)=>{   //
     if(ctx.session.isNew){  //如果为true 表示session 没有
         if(ctx.cookies.get('uid')){
+
+            let uid = ctx.cookies.get('uid');
+
+            const  avatar = await User.findById(uid)
+            .then( data => data.avatar )
+
             ctx.session = {
                 username : ctx.cookies.get('username'),
-                uid : ctx.cookies.get('uid'),
+                uid,
+                avatar
             }
         }
     }
@@ -154,4 +164,31 @@ exports.logout = async ctx=>{
     //重定向到首页
     ctx.redirect("/")
 
+}
+
+// 用户头像上床
+exports.upload = async ctx =>{
+    //拿到新的头像地址
+    const filename = ctx.req.file.filename;
+
+    let data = {};
+
+    await User.update({ _id : ctx.session.uid }, {$set : {avatar: '/avatar/' + filename}},
+            (err,res) => {
+                if(err){
+                    data = {
+                        stasus : 0,
+                        message : err,
+                    }
+                }else {
+                    data = {
+                        status : 1,
+                        message : "上传成功"
+                    }
+                }
+            }
+        );
+
+
+    ctx.body = data
 }
