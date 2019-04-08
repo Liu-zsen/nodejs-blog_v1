@@ -1,16 +1,6 @@
-const { db } = require('../Schema/config');
-
-//去用户的Schema 拿到操作user 集合的实例对象
-const UserSchema = require('../Schema/user');
-const User = db.model('users' ,UserSchema);
-
-// 通过db对象创建操作user数据库的模型对象
-const ArticleSchema = require('../Schema/article');
-const Article = db.model('articles',ArticleSchema);
-
-// 通过db对象创建操作user数据库的模型对象
-const CommentSchema = require('../Schema/comment');
-const Comment = db.model('comments',CommentSchema);
+const User = require('../Moudels/user');
+const Article = require('../Moudels/article');
+const Comment = require('../Moudels/comment');
 
 //文章发表页
 exports.addPage = async ctx =>{
@@ -65,7 +55,6 @@ exports.add = async ctx =>{
             }
         })
 };
-
 
 //获取文章列表
 exports.getList = async ctx=>{
@@ -151,20 +140,17 @@ exports.del = async  ctx => {
     //文章对应的所有评论
     //被删除评论对应的用户表里面的 commentNum -=1
 
-    let res = {}
-    //删除文章本身
-    await  Article.deleteOne({_id}).exec((err) => {
-        if(err){
-            res = {
-                state : 1,
-                message : '删除失败'
-            }
-        }else{
-            Article.findById(_id,(err,data) => {
-                if (err) return console.log(err)
-            })
-        }
-    })
+    let res = {
+        state : 1,
+        message : "成功"
+    }
+
+    await Article.findById(_id)
+        .then(data => data.remove())
+        .catch(err => res ={
+            state : 0,
+            message : err
+        })
 
     ctx.body = res
 }

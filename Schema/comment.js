@@ -23,8 +23,19 @@ const CommentSchema = new Schema({
 
 //设置 comment的remove钩子
 // CommentSchema.pre('remove',(next)=>{});//通过pre前置钩子 监听删除行为
-CommentSchema.post('save',(document) => {
+CommentSchema.post('remove',(document) => {
     //当前回调函数 一定会在save 事件执行前触发
+
+    const Article =require('../Moudels/article');
+    const User =require('../Moudels/user');
+
+    const { from ,article} = document;
+
+    //对应文章的评论数 -1
+    Article.updateOne({_id : article}, {$inc : {commentNum : -1}}).exec();
+
+    //当前被删除评论的作者的commentNum -1
+    User.updateOne({ _id: from},{$inc : {commentNum: -1}}).exec()
 
 });
 

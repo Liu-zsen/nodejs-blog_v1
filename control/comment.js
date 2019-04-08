@@ -1,14 +1,6 @@
-const { db } = require('../Schema/config');
-//取出用户Schema 为了拿到操作 USERS 集合的实例对象
-const UserSchema = require('../Schema/user');
-const User = db.model('users',UserSchema);
-
-//T通过 db 对象创建操作articles 数据库的模型对象
-const ArticleSchema = require('../Schema/article');
-const Article = db.model('articles', ArticleSchema );
-
-const CommentSchema = require('../Schema/comment');
-const Comment = db.model('comments', CommentSchema);
+const User = require('../Moudels/user');
+const Article = require('../Moudels/article');
+const Comment = require('../Moudels/comment');
 
 //保存评论
 exports.save = async ctx => {
@@ -76,5 +68,20 @@ exports.del = async ctx => {
     //获取评论ID
     const commentId = ctx.params.id;
 
+    //拿到评论Id 删除comment
+
+    let res = {
+        state : 1,
+        message : '成功'
+    }
+
+    await Comment.findById(commentId)
+        .then(data => data.remove())
+        .catch(err => res = {
+            state : 0,
+            message : err
+        });
+
+    ctx.body = res
       
 };

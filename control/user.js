@@ -1,9 +1,9 @@
-const { db } = require('../Schema/config');
-const UserSchema = require('../Schema/user');
+const User = require('../Moudels/user');
+const Article = require('../Moudels/article');
+const Comment = require('../Moudels/comment');
 const encrypt =require('../util/encrypt');
 
 // 通过db对象创建操作user数据库的模型对象
-const User = db.model('users',UserSchema);
 
 //用户注册
 exports.reg = async ctx=>{

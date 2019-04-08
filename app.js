@@ -5,16 +5,22 @@ const logger = require('koa-logger');
 const router = require('./routers/router');
 const body = require('koa-body');
 const { join } = require('path');
-
+const compress = require('koa-compress');
 const session = require('koa-session');
 
 //生成koa实例
 const app = new Koa();
 
 //用logger模块监听 请求的信息  ，所以是第一个注册的中间件
-app.use(logger());
+// app.use(logger());
 
-app.keys = ['Jason是个大帅b']
+//注册资源压缩模块 compress
+app.use(compress({
+    threshold: 2048,
+    flush: require('zlib').Z_SYNC_FLUSH
+}))
+
+app.keys = ['Jason是个大帅b'];
 
 //session 的配置对象
 const CONFIG ={

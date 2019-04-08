@@ -1,5 +1,9 @@
 const { db } = require('../Schema/config');
 
+
+// const User = require('../Moudels/user');
+// const Article = require('../Moudels/article');
+// const Comment = require('../Moudels/comment');
 //去用户的Schema 拿到操作user 集合的实例对象
 const UserSchema = require('../Schema/user');
 const User = db.model('users' ,UserSchema);
